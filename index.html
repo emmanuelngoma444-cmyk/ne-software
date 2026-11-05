@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>N-E Software | Solutions logicielles GSM</title>
+<style>
+  :root{
+    --bg:#0a1128;
+    --bg2:#101a3a;
+    --blue:#2f7bff;
+    --green:#19d35a;
+    --text:#e8eefc;
+    --muted:#9fb0d6;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
+  header{padding:18px 20px;text-align:center;background:var(--bg2);border-bottom:1px solid #1d2a55}
+  header h1{color:var(--blue);font-size:1.6rem}
+  header p{color:var(--muted);font-size:.95rem}
+
+  /* Bandeau animé qui fait défiler les services */
+  .ticker{overflow:hidden;white-space:nowrap;background:#0d1733;border-bottom:1px solid #1d2a55;padding:12px 0}
+  .ticker-track{display:inline-block;padding-left:100%;animation:defile 35s linear infinite}
+  .ticker:hover .ticker-track{animation-play-state:paused}
+  .ticker span{display:inline-block;margin:0 28px;color:var(--blue);font-weight:bold;font-size:1.05rem}
+  .ticker span::before{content:"\25CF";color:var(--green);margin-right:10px}
+  @keyframes defile{from{transform:translateX(0)}to{transform:translateX(-100%)}}
+
+  .hero{text-align:center;padding:40px 20px}
+  .hero h2{font-size:1.8rem;margin-bottom:10px}
+  .hero p{color:var(--muted);max-width:640px;margin:0 auto 22px}
+
+  .btn{display:inline-block;border:none;cursor:pointer;background:var(--green);color:#04210f;font-weight:bold;padding:12px 22px;border-radius:10px;text-decoration:none;font-size:1rem}
+  .btn:hover{filter:brightness(1.1)}
+
+  main{max-width:1050px;margin:0 auto;padding:10px 18px 50px}
+  h3.cat{color:var(--blue);margin:38px 0 6px;font-size:1.4rem;border-left:5px solid var(--green);padding-left:12px}
+  .cat-desc{color:var(--muted);margin-bottom:16px;font-size:.95rem}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}
+  .card{background:var(--bg2);border:1px solid #1d2a55;border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:8px}
+  .card h4{color:var(--blue);font-size:1.1rem}
+  .card p{color:var(--muted);font-size:.9rem;flex:1}
+  .price{color:var(--blue);font-weight:bold;font-size:1.05rem}
+
+  /* Fenêtre de choix du processeur */
+  .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);align-items:center;justify-content:center;z-index:50;padding:16px}
+  .modal-bg.open{display:flex}
+  .modal{background:var(--bg2);border:1px solid var(--blue);border-radius:16px;padding:24px;max-width:380px;width:100%}
+  .modal h4{color:var(--blue);margin-bottom:6px}
+  .modal p{color:var(--muted);margin-bottom:14px;font-size:.92rem}
+  .choice{display:flex;justify-content:space-between;align-items:center;background:var(--bg);border:1px solid #1d2a55;border-radius:10px;padding:12px;margin-bottom:10px}
+  .close{background:none;border:none;color:var(--muted);cursor:pointer;margin-top:4px}
+
+  .pay{background:var(--bg2);border:1px solid #1d2a55;border-radius:14px;padding:20px}
+  .pay li{margin:8px 0 8px 18px}
+  .pay strong{color:var(--blue)}
+  .note{background:#16224a;border-left:4px solid var(--green);padding:14px;border-radius:8px;color:var(--muted);margin-top:20px;font-size:.92rem}
+
+  select{width:100%;padding:10px;border-radius:8px;border:1px solid #1d2a55;background:var(--bg);color:var(--text);margin-bottom:8px}
+  footer{text-align:center;color:var(--muted);padding:24px;border-top:1px solid #1d2a55;font-size:.85rem}
+  .float{position:fixed;right:16px;bottom:16px;z-index:40}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>N-E Software</h1>
+  <p>Solutions logicielles pour votre téléphone</p>
+</header>
+
+<!-- Bandeau animé -->
+<div class="ticker">
+  <div class="ticker-track">
+    <span>MDM</span><span>FRP</span><span>Anti-crack</span><span>Réparation d'IMEI</span>
+    <span>Tecno ID</span><span>Huawei ID</span><span>iCloud</span><span>Firmwares d'origine</span>
+    <span>Déblocage en ligne</span><span>Service serveur</span><span>Activation de licences</span>
+    <span>Location de licences</span><span>Assistance</span>
+  </div>
+</div>
+
+<section class="hero">
+  <h2>Déblocage et services logiciels, rapides et fiables</h2>
+  <p>Choisissez votre service, commandez en un clic sur WhatsApp et payez par Mobile Money.</p>
+  <a class="btn" href="#" onclick="wa('Bonjour, j\'aimerais passer une commande.');return false;">Commander sur WhatsApp</a>
+</section>
+
+<main>
+
+  <!-- ====== CATEGORIE 1 : SERVICES AVEC CHOIX DU PROCESSEUR ====== -->
+  <h3 class="cat">Services MediaTek et Spreadtrum</h3>
+  <p class="cat-desc">Cliquez sur un service pour choisir le type de processeur.</p>
+  <div class="grid">
+    <div class="card"><h4>MDM</h4><p>Suppression du verrouillage MDM.</p><div class="price">à partir de 6 500 FCFA</div><button class="btn" onclick="openModal('MDM',7700,6500)">Acheter</button></div>
+    <div class="card"><h4>FRP</h4><p>Suppression du compte Google après réinitialisation.</p><div class="price">à partir de 2 500 FCFA</div><button class="btn" onclick="openModal('FRP',3000,2500)">Acheter</button></div>
+    <div class="card"><h4>Anti-crack</h4><p>Protection de votre téléphone.</p><div class="price">à partir de 7 700 FCFA</div><button class="btn" onclick="openModal('Anti-crack',8500,7700)">Acheter</button></div>
+    <div class="card"><h4>Réparation d'IMEI</h4><p>Réparation de l'IMEI de votre appareil.</p><div class="price">à partir de 2 000 FCFA</div><button class="btn" onclick="openModal('Réparation d\'IMEI',2500,2000)">Acheter</button></div>
+  </div>
+
+  <!-- ====== CATEGORIE 2 : COMPTES ====== -->
+  <h3 class="cat">Suppression de comptes</h3>
+  <p class="cat-desc">Pour les téléphones dont vous êtes le propriétaire.</p>
+  <div class="grid">
+    <div class="card"><h4>Tecno ID</h4><p>Suppression du compte Tecno ID.</p><div class="price">3 500 FCFA</div><button class="btn" onclick="wa('Bonjour, je veux acheter : suppression Tecno ID (3500 FCFA).')">Acheter</button></div>
+    <div class="card"><h4>Huawei ID</h4><p>Le prix dépend de la version de protection. Il vous est donné lors du contact.</p><div class="price">Sur commande</div><button class="btn" onclick="wa('Bonjour, je veux commander : suppression Huawei ID.')">Commander</button></div>
+    <div class="card"><h4>iCloud</h4><p>Le prix dépend du type de protection de l'appareil. Il vous est donné lors du contact.</p><div class="price">Sur commande</div><button class="btn" onclick="wa('Bonjour, je veux commander : déblocage iCloud.')">Commander</button></div>
+  </div>
+
+  <!-- ====== CATEGORIE 3 : FIRMWARES ET DEBLOCAGE EN LIGNE ====== -->
+  <h3 class="cat">Firmwares et déblocage en ligne</h3>
+  <div class="grid">
+    <div class="card"><h4>Firmwares d'origine</h4><p>Le prix dépend de la taille du firmware et du type de téléphone.</p><div class="price">Sur commande</div><button class="btn" onclick="wa('Bonjour, je veux commander un firmware d\'origine. Marque et modèle du téléphone : ')">Commander</button></div>
+    <div class="card"><h4>Déblocage en ligne</h4><p>Décrivez votre souci, laissez une capture d'écran de votre appareil et passez la commande. Le prix dépend de l'opération (flash, FRP, etc.).</p><div class="price">Sur commande</div><button class="btn" onclick="wa('Bonjour, je veux un déblocage en ligne. Mon souci : ')">Commander</button></div>
+  </div>
+
+  <!-- ====== CATEGORIE 4 : SERVICE SERVEUR ====== -->
+  <h3 class="cat">Service serveur</h3>
+  <p class="cat-desc">Activation, location de licences et assistance pour vos logiciels GSM. Le prix vous est communiqué sur WhatsApp.</p>
+  <div class="grid">
+    <div class="card">
+      <h4>Service d'activation</h4>
+      <p>Activation de licence pour le logiciel de votre choix.</p>
+      <select id="soft-activation"></select>
+      <button class="btn" onclick="serveur('activation')">Commander</button>
+    </div>
+    <div class="card">
+      <h4>Service de location</h4>
+      <p>Location de licence : choisissez le logiciel, précisez la durée sur WhatsApp.</p>
+      <select id="soft-location"></select>
+      <button class="btn" onclick="serveur('location')">Commander</button>
+    </div>
+    <div class="card">
+      <h4>Service d'assistance</h4>
+      <p>Aide et accompagnement sur votre logiciel. Décrivez votre souci et joignez une capture d'écran sur WhatsApp.</p>
+      <select id="soft-assistance"></select>
+      <button class="btn" onclick="serveur('assistance')">Commander</button>
+    </div>
+  </div>
+
+  <!-- ====== PAIEMENT ====== -->
+  <h3 class="cat">Paiement</h3>
+  <div class="pay">
+    <p>Paiement par Mobile Money :</p>
+    <ul>
+      <li><strong>MTN Money</strong> : 06 981 98 01</li>
+      <li><strong>Airtel Money</strong> : 04 445 46 87</li>
+    </ul>
+    <p style="margin-top:10px">Après le paiement, envoyez la capture d'écran de la transaction sur WhatsApp au 06 981 98 01.</p>
+  </div>
+
+  <div class="note">Nos services s'adressent aux propriétaires de leur téléphone. Une preuve d'achat ou de propriété de l'appareil peut vous être demandée avant toute intervention.</div>
+</main>
+
+<footer>© N-E Software | Congo-Brazzaville</footer>
+
+<a class="btn float" href="#" onclick="wa('Bonjour, j\'ai une question.');return false;">WhatsApp</a>
+
+<!-- Fenêtre de choix du processeur -->
+<div class="modal-bg" id="modal">
+  <div class="modal">
+    <h4 id="m-title"></h4>
+    <p>Choisissez le type de processeur de votre téléphone :</p>
+    <div class="choice"><span>MediaTek <span class="price" id="m-mtk"></span></span><button class="btn" onclick="buy('MediaTek')">Acheter</button></div>
+    <div class="choice"><span>Spreadtrum <span class="price" id="m-spd"></span></span><button class="btn" onclick="buy('Spreadtrum')">Acheter</button></div>
+    <button class="close" onclick="closeModal()">Fermer</button>
+  </div>
+</div>
+
+<script>
+  var NUMERO = "242069819801";   // WhatsApp : +242 06 981 98 01
+  var LOGICIELS = ["UnlockTool","TSM Tool","Chimera","Griffin Tool","EFT Pro","FT Pro","Scorpion","Phoenix Tool","Sigma Plus","Z3X Tool","053 LM Tool"];
+  var service = "", prixMtk = 0, prixSpd = 0;
+
+  function wa(msg){
+    window.open("https://wa.me/" + NUMERO + "?text=" + encodeURIComponent(msg), "_blank");
+  }
+  function fmt(n){ return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " FCFA"; }
+
+  function openModal(nom, mtk, spd){
+    service = nom; prixMtk = mtk; prixSpd = spd;
+    document.getElementById("m-title").textContent = nom;
+    document.getElementById("m-mtk").textContent = fmt(mtk);
+    document.getElementById("m-spd").textContent = fmt(spd);
+    document.getElementById("modal").classList.add("open");
+  }
+  function closeModal(){ document.getElementById("modal").classList.remove("open"); }
+  function buy(proc){
+    var prix = proc === "MediaTek" ? prixMtk : prixSpd;
+    wa("Bonjour, je veux acheter : " + service + " " + proc + " (" + fmt(prix) + ").");
+    closeModal();
+  }
+
+  // Remplit les listes de logiciels du Service serveur
+  ["activation","location","assistance"].forEach(function(type){
+    var sel = document.getElementById("soft-" + type);
+    LOGICIELS.forEach(function(l){ var o = document.createElement("option"); o.value = l; o.textContent = l; sel.appendChild(o); });
+  });
+
+  function serveur(type){
+    var logiciel = document.getElementById("soft-" + type).value;
+    var libelle = {activation:"l'activation de licence", location:"la location de licence", assistance:"une assistance"}[type];
+    wa("Bonjour, je veux commander " + libelle + " pour : " + logiciel + ". Merci de m'indiquer le prix.");
+  }
+</script>
+</body>
+</html>
