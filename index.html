@@ -1,497 +1,123 @@
 <!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>N-E Software | Solutions logicielles GSM</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --top:#0b5ed7;
-    --teal:#1f9aa3;
-    --teal-d:#177b83;
-    --bg:#f2f6f9;
-    --card:#ffffff;
-    --text:#1c2b39;
-    --muted:#6b7c8c;
-    --green:#22c55e;
-    --line:#e2e9ef;
-    --navy:#0a1f44;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:'Poppins',Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
-  a{text-decoration:none;color:inherit}
-  img{max-width:100%}
-
-  .topbar{background:var(--top);color:#fff;text-align:center;padding:8px 12px;font-size:.88rem}
-  .topbar a{color:#ffe14d;font-weight:600;margin-left:8px}
-
-  nav{background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:10px 22px;flex-wrap:wrap;gap:10px}
-  .logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.25rem}
-  .logo img{height:44px;width:auto;border-radius:8px;display:none}
-  .logo .txt span{background:#fff;color:var(--teal);border-radius:8px;padding:2px 8px;margin-right:6px}
-  .menu{display:flex;gap:22px;font-weight:500;font-size:.95rem;flex-wrap:wrap}
-  .menu a:hover{text-decoration:underline}
-  .auth button{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.4);color:#fff;padding:8px 16px;border-radius:10px;cursor:pointer;font-family:inherit;font-weight:500}
-  .auth button:hover{background:rgba(255,255,255,.3)}
-  #userBox{display:none;align-items:center;gap:10px;font-size:.9rem}
-
-  .hero{margin:22px auto;max-width:1100px;border-radius:18px;overflow:hidden;background:linear-gradient(135deg,#0a1f44,#0b5ed7 60%,#1f9aa3);color:#fff;padding:44px 28px;text-align:center}
-  .hero h1{font-size:2rem;margin-bottom:8px}
-  .hero p{opacity:.9;max-width:620px;margin:0 auto 20px}
-  .btn{display:inline-block;border:none;cursor:pointer;background:var(--green);color:#052e16;font-family:inherit;font-weight:600;padding:11px 22px;border-radius:10px;font-size:.95rem}
-  .btn:hover{filter:brightness(1.08)}
-  .btn.ghost{background:#eef3f7;color:var(--text)}
-
-  .ticker{max-width:1100px;margin:0 auto;overflow:hidden;white-space:nowrap;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 0}
-  .ticker-track{display:inline-block;padding-left:100%;animation:defile 38s linear infinite}
-  .ticker:hover .ticker-track{animation-play-state:paused}
-  .ticker span{display:inline-block;margin:0 26px;color:var(--teal-d);font-weight:600}
-  .ticker span::before{content:"\25CF";color:var(--green);margin-right:9px}
-  @keyframes defile{from{transform:translateX(0)}to{transform:translateX(-100%)}}
-
-  main{max-width:1100px;margin:0 auto;padding:26px 18px 60px}
-  .section-title{font-size:1.25rem;font-weight:700;margin:6px 0 4px;border-left:5px solid var(--teal);padding-left:12px}
-  .section-sub{color:var(--muted);font-size:.92rem;margin:0 0 16px 17px}
-
-  .folders{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
-  .folder{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px 20px;cursor:pointer;transition:.2s;box-shadow:0 2px 8px rgba(10,31,68,.05)}
-  .folder:hover{transform:translateY(-4px);box-shadow:0 10px 22px rgba(10,31,68,.12);border-color:var(--teal)}
-  .folder .ico{width:50px;height:50px;border-radius:14px;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:12px}
-  .folder h3{font-size:1.08rem;margin-bottom:4px}
-  .folder p{color:var(--muted);font-size:.88rem}
-  .folder .count{display:inline-block;margin-top:10px;background:#e6f5f6;color:var(--teal-d);font-size:.78rem;font-weight:600;border-radius:20px;padding:3px 10px}
-
-  .overlay{display:none;position:fixed;inset:0;background:rgba(10,31,68,.55);align-items:center;justify-content:center;z-index:60;padding:14px}
-  .overlay.open{display:flex}
-  .win{background:#fff;border-radius:18px;width:100%;max-width:640px;max-height:90vh;overflow:auto;padding:22px;position:relative}
-  .win.small{max-width:440px}
-  .win h2{font-size:1.2rem;color:var(--navy);margin-bottom:4px;padding-right:30px}
-  .win .sub{color:var(--muted);font-size:.9rem;margin-bottom:14px}
-  .x{position:absolute;top:12px;right:14px;background:#eef3f7;border:none;border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:1rem}
-
-  .item{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:10px;background:#fafcfd}
-  .item h4{font-size:.98rem}
-  .item p{color:var(--muted);font-size:.82rem}
-  .price{color:var(--teal-d);font-weight:700;white-space:nowrap}
-  .item .btn{padding:8px 14px;font-size:.85rem;white-space:nowrap}
-
-  select,input{width:100%;padding:11px;border-radius:10px;border:1px solid var(--line);font-family:inherit;font-size:.92rem;margin-bottom:10px;background:#fff}
-  label{font-size:.85rem;font-weight:500;color:var(--muted)}
-
-  /* Liste des logiciels avec recherche et icones */
-  .softlist{max-height:300px;overflow:auto;border:1px solid var(--line);border-radius:12px;margin-bottom:12px}
-  .soft{display:flex;align-items:center;gap:10px;padding:9px 12px;cursor:pointer;border-bottom:1px solid var(--line);font-size:.92rem}
-  .soft:last-child{border-bottom:none}
-  .soft:hover{background:#f2f9fa}
-  .soft.sel{background:#e6f5f6;font-weight:600;color:var(--teal-d)}
-  .soft img,.soft .dflt{width:28px;height:28px;border-radius:7px;object-fit:cover;flex-shrink:0}
-  .soft .dflt{background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700}
-  .chosen{font-size:.88rem;margin-bottom:10px;color:var(--text)}
-
-  /* Paiement */
-  .recap{background:#e6f5f6;border-radius:12px;padding:12px 14px;margin-bottom:14px}
-  .recap strong{color:var(--teal-d)}
-  .pay-choice{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
-  .pay-opt{border:2px solid var(--line);border-radius:12px;padding:10px 6px;text-align:center;cursor:pointer;font-weight:600;font-size:.82rem;display:flex;flex-direction:column;align-items:center;gap:6px}
-  .pay-opt img{height:34px;width:auto;max-width:100%;object-fit:contain;display:none}
-  .pay-opt.sel{border-color:var(--teal);background:#e6f5f6}
-  .pay-opt.mtn.sel{border-color:#f5b800;background:#fff8dc}
-  .pay-opt.airtel.sel{border-color:#e4002b;background:#ffe9ed}
-  .pay-opt.binance.sel{border-color:#f0b90b;background:#fffbe6}
-  .numbox{background:var(--bg);border-radius:12px;padding:14px;text-align:center;margin-bottom:12px}
-  .numbox .num{font-size:1.4rem;font-weight:700;color:var(--navy);margin:4px 0;word-break:break-all}
-  .steps{color:var(--muted);font-size:.84rem;margin:0 0 12px 18px}
-  .row{display:flex;gap:8px;flex-wrap:wrap}
-  .row .btn{flex:1}
-  .msg{font-size:.85rem;margin-top:6px;color:#c0392b}
-  .note{background:#fff;border:1px solid var(--line);border-left:5px solid var(--green);border-radius:10px;padding:14px;color:var(--muted);font-size:.88rem;margin-top:26px}
-  .paylogos{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
-  .paylogos img{height:32px;width:auto;display:none}
-
-  footer{text-align:center;color:var(--muted);padding:24px;font-size:.85rem}
-  .float{position:fixed;right:16px;bottom:16px;z-index:50;box-shadow:0 6px 16px rgba(0,0,0,.25);border-radius:30px;padding:12px 20px}
-</style>
-</head>
-<body>
-
-<div class="topbar">Besoin d'aide ? <a href="#" onclick="wa('Bonjour, j\'ai une question.');return false;">Contactez-nous sur WhatsApp</a></div>
-
-<nav>
-  <div class="logo">
-    <img src="images/logo.png" alt="N-E Software" onload="this.style.display='block';this.nextElementSibling.style.display='none'">
-    <div class="txt"><span>N-E</span>Software</div>
-  </div>
-  <div class="menu">
-    <a href="#services">Services</a>
-    <a href="#paiement">Paiement</a>
-    <a href="#" onclick="wa('Bonjour, j\'ai une question.');return false;">Contact</a>
-  </div>
-  <div class="auth">
-    <button id="btnLogin" onclick="openWin('winAuth')">Connexion | Inscription</button>
-    <div id="userBox"><span id="userMail"></span><button onclick="logout()">Déconnexion</button></div>
-  </div>
-</nav>
-
-<section class="hero">
-  <h1>Solutions logicielles pour votre téléphone</h1>
-  <p>Déblocage, licences et assistance GSM. Choisissez un dossier, commandez en un clic et payez par Mobile Money ou Binance Pay.</p>
-  <a class="btn" href="#services">Voir les services</a>
-</section>
-
-<div class="ticker">
-  <div class="ticker-track">
-    <span>MDM</span><span>FRP</span><span>Anti-crack</span><span>Réparation d'IMEI</span>
-    <span>Tecno ID</span><span>Huawei ID</span><span>iCloud</span><span>Firmwares d'origine</span>
-    <span>Déblocage en ligne</span><span>Service serveur</span><span>Activation de licences</span>
-    <span>Location de licences</span><span>Assistance</span><span>IPTV</span><span>Prime Video</span>
-  </div>
-</div>
-
+:root{--t:#1f9aa5;--d:#0b5a62;--b:#1565c0;--g:#25d366}
+*{box-sizing:border-box;margin:0}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#f4f7f8;color:#243238}
+a{color:inherit;text-decoration:none}
+.top{background:linear-gradient(90deg,#1e88e5,#1565c0);color:#fff;text-align:center;padding:8px;font-size:14px}.top a{color:#ffd54f;font-weight:700}
+nav{background:var(--t);display:flex;align-items:center;gap:22px;padding:10px 5%;flex-wrap:wrap;position:sticky;top:0;z-index:20;color:#fff;font-size:14px;font-weight:500}
+.logo{display:flex;align-items:center;gap:8px;font-weight:700;font-size:18px}.logo img{height:34px;border-radius:6px}
+.sp{flex:1}
+.login{background:#fff;color:var(--d);border:0;border-radius:8px;padding:8px 14px;font:inherit;font-weight:700;cursor:pointer}
+.hero{max-width:1100px;height:260px;margin:24px auto;position:relative;border-radius:12px;overflow:hidden}
+.hero.im{height:auto;aspect-ratio:21/8}
+.sl{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;gap:10px;padding:0 8%;color:#fff;opacity:0;transition:opacity .6s}.sl.on{opacity:1}.sl h2{font-size:clamp(22px,4vw,38px)}
+.sl a{background:var(--g);width:fit-content;padding:9px 16px;border-radius:8px;font-weight:700;font-size:14px}
+main{max-width:1100px;margin:auto;padding:0 16px}
+.ttl{margin:28px 0 12px;font-size:18px;border-left:4px solid var(--t);padding-left:10px}
+input,textarea{width:100%;padding:11px;border:1px solid #cfd8dc;border-radius:8px;font:inherit;margin:6px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;margin-top:12px}
+.card{background:#fff;border-radius:10px;padding:14px;display:flex;gap:12px;cursor:pointer;box-shadow:0 1px 4px #0001;transition:.2s}.card:hover{transform:translateY(-2px);box-shadow:0 6px 16px #0002}
+.ic{font-size:30px;background:#e0f4f6;border-radius:10px;width:54px;height:54px;display:grid;place-items:center;flex:none}
+.card p{font-size:13px;color:#607d8b;margin:3px 0 6px}
+.bd{font-size:11px;font-weight:700;background:#e3f2fd;color:var(--b);padding:3px 8px;border-radius:6px}.bd.o{background:#fff3e0;color:#e65100}
+.folders{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.fd{background:#fff;border:2px solid #b2dfe3;border-radius:12px;padding:18px;text-align:center;cursor:pointer;font-weight:700}.fd span{display:block;font-size:34px}
+.feat{background:var(--t);color:#fff;margin-top:32px;padding:18px 5%;display:flex;justify-content:space-around;flex-wrap:wrap;gap:14px;font-size:14px}
+footer{background:var(--d);color:#cfe9ec;padding:30px 5% 80px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;font-size:14px}footer h4{color:#fff;margin-bottom:8px}footer p{margin:5px 0}
+.fabs{position:fixed;right:16px;bottom:16px;display:flex;gap:10px;z-index:30}
+.fab{background:var(--g);color:#fff;padding:12px 18px;border-radius:30px;font-weight:700;box-shadow:0 4px 14px #0004}.fab.yt{background:#e62117}
+.ov{position:fixed;inset:0;background:#000a;display:none;place-items:center;z-index:50;padding:14px}.ov.on{display:grid}
+.mod{background:#fff;border-radius:14px;padding:22px;width:min(520px,100%);max-height:88vh;overflow:auto;position:relative}
+.x{position:absolute;right:12px;top:8px;border:0;background:none;font-size:28px;cursor:pointer}
+.btn{display:block;width:100%;margin-top:10px;padding:12px;border:0;border-radius:8px;background:var(--b);color:#fff;font:inherit;font-weight:700;cursor:pointer}.btn.g{background:var(--g)}.btn.o{background:var(--t)}
+.opt{display:flex;align-items:center;gap:8px;border:1px solid #cfd8dc;border-radius:8px;padding:11px;margin-top:8px;cursor:pointer}.opt input{width:auto;margin:0}.opt b{margin-left:auto;color:var(--b)}
+.pm{display:flex;align-items:center;gap:8px;background:#f1f8f9;border-radius:8px;padding:10px;margin-top:8px;flex-wrap:wrap}.pm span{margin-left:auto;font-weight:700;color:var(--b)}
+.cp{border:1px solid var(--t);background:#fff;border-radius:6px;padding:4px 8px;cursor:pointer}
+.sm{font-size:12px;color:#607d8b;margin-top:8px}
+.ld{position:fixed;inset:0;background:#fffc;display:none;place-items:center;z-index:100}.ld.on{display:grid}
+.ld img,.ld b{width:90px;height:90px;object-fit:contain;animation:pu .8s ease-in-out infinite}
+.ld b{display:grid;place-items:center;background:var(--t);color:#fff;border-radius:20px;font-size:28px}
+@keyframes pu{0%,100%{transform:scale(.85);opacity:.6}50%{transform:scale(1.1);opacity:1}}
+.s{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}.tl{background:#f1f8f9;border-radius:10px;padding:10px;text-align:center;font-size:12px;cursor:pointer}.tl img{width:48px;height:48px;object-fit:contain;display:block;margin:0 auto 6px}
+</style></head><body>
+<div class="top">Devenir revendeur ? <a href="#" onclick="wa('Bonjour, je souhaite devenir revendeur N-E Software.');return false">Contactez-nous sur WhatsApp</a></div>
+<nav><a class="logo" href="#"><img src="images/logo.png" alt="" onerror="this.remove()">N-E Software</a>
+<a href="#">Accueil</a><a href="#services">Services</a><a href="#" onclick="openServeur();return false">Service serveur</a><a href="#" onclick="payInfo();return false">Paiement</a><a href="#contact">Contact</a>
+<span class="sp"></span><button id="authBtn" class="login" onclick="openAuth()">Connexion / Inscription</button></nav>
+<header class="hero" id="hero"></header>
 <main>
-  <h2 class="section-title" id="services">Nos services</h2>
-  <p class="section-sub">Cliquez sur un dossier pour voir les services.</p>
-
-  <div class="folders">
-    <div class="folder" onclick="openFolder('proc')">
-      <div class="ico">&#9881;</div>
-      <h3>MediaTek et Spreadtrum</h3>
-      <p>MDM, FRP, anti-crack, réparation d'IMEI.</p>
-      <span class="count">4 services</span>
-    </div>
-    <div class="folder" onclick="openFolder('comptes')">
-      <div class="ico">&#128274;</div>
-      <h3>Suppression de comptes</h3>
-      <p>Tecno ID, Huawei ID, iCloud.</p>
-      <span class="count">3 services</span>
-    </div>
-    <div class="folder" onclick="openFolder('firm')">
-      <div class="ico">&#128190;</div>
-      <h3>Firmwares et déblocage en ligne</h3>
-      <p>Firmwares d'origine et déblocage à distance.</p>
-      <span class="count">2 services</span>
-    </div>
-    <div class="folder" onclick="openFolder('serveur')">
-      <div class="ico">&#9729;</div>
-      <h3>Service serveur</h3>
-      <p>Activation, location de licences et assistance, plus IPTV et Prime Video.</p>
-      <span class="count">77 logiciels</span>
-    </div>
-  </div>
-
-  <h2 class="section-title" id="paiement" style="margin-top:40px">Paiement</h2>
-  <p class="section-sub">Payez après avoir choisi votre service.</p>
-  <div class="note" style="margin-top:0">
-    <div class="paylogos">
-      <img src="images/mtn.png" alt="MTN Money" onload="this.style.display='block'">
-      <img src="images/airtel.png" alt="Airtel Money" onload="this.style.display='block'">
-      <img src="images/binance.png" alt="Binance Pay" onload="this.style.display='block'">
-    </div>
-    <strong>MTN Money</strong> : 06 981 98 01 &nbsp;|&nbsp; <strong>Airtel Money</strong> : 04 445 46 87 &nbsp;|&nbsp; <strong>Binance Pay</strong> : ID <span id="binanceShow"></span><br>
-    Après le paiement, envoyez la capture de la transaction sur WhatsApp.
-  </div>
-
-  <div class="note">Nos services s'adressent aux propriétaires de leur téléphone. Une preuve d'achat ou de propriété de l'appareil peut vous être demandée avant toute intervention.</div>
-</main>
-
-<footer>© N-E Software | Congo-Brazzaville</footer>
-
-<a class="btn float" href="#" onclick="wa('Bonjour, j\'ai une question.');return false;">WhatsApp</a>
-
-<!-- Fenetre : contenu d'un dossier -->
-<div class="overlay" id="winFolder">
-  <div class="win">
-    <button class="x" onclick="closeWin('winFolder')">&#10005;</button>
-    <h2 id="fTitle"></h2>
-    <p class="sub" id="fSub"></p>
-    <div id="fBody"></div>
-  </div>
-</div>
-
-<!-- Fenetre : choix du processeur -->
-<div class="overlay" id="winProc">
-  <div class="win small">
-    <button class="x" onclick="closeWin('winProc')">&#10005;</button>
-    <h2 id="pTitle"></h2>
-    <p class="sub">Choisissez le type de processeur de votre téléphone.</p>
-    <div class="item"><div><h4>MediaTek</h4><span class="price" id="pMtk"></span></div><button class="btn" onclick="pickProc('MediaTek')">Acheter</button></div>
-    <div class="item"><div><h4>Spreadtrum</h4><span class="price" id="pSpd"></span></div><button class="btn" onclick="pickProc('Spreadtrum')">Acheter</button></div>
-  </div>
-</div>
-
-<!-- Fenetre : service serveur avec recherche -->
-<div class="overlay" id="winServeur">
-  <div class="win small">
-    <button class="x" onclick="closeWin('winServeur')">&#10005;</button>
-    <h2 id="sTitle"></h2>
-    <p class="sub" id="sSub"></p>
-    <label>Rechercher un logiciel</label>
-    <input type="text" id="sSearch" placeholder="Tapez le nom du logiciel..." oninput="filtrerLogiciels()">
-    <div class="softlist" id="sList"></div>
-    <div class="chosen" id="sChosen">Aucun logiciel choisi.</div>
-    <button class="btn" style="width:100%" onclick="sendServeur()">Commander sur WhatsApp</button>
-    <div class="msg" id="sMsg"></div>
-  </div>
-</div>
-
-<!-- Fenetre : paiement -->
-<div class="overlay" id="winPay">
-  <div class="win small">
-    <button class="x" onclick="closeWin('winPay')">&#10005;</button>
-    <h2>Paiement</h2>
-    <div class="recap" id="payRecap"></div>
-    <div class="pay-choice">
-      <div class="pay-opt mtn" id="optMtn" onclick="selPay('mtn')"><img src="images/mtn.png" alt="" onload="this.style.display='block'">MTN Money</div>
-      <div class="pay-opt airtel" id="optAirtel" onclick="selPay('airtel')"><img src="images/airtel.png" alt="" onload="this.style.display='block'">Airtel Money</div>
-      <div class="pay-opt binance" id="optBinance" onclick="selPay('binance')"><img src="images/binance.png" alt="" onload="this.style.display='block'">Binance Pay</div>
-    </div>
-    <div id="payDetail" style="display:none">
-      <div class="numbox">
-        <div style="font-size:.82rem;color:var(--muted)" id="payLabelTxt">Envoyez le montant au numéro</div>
-        <div class="num" id="payNum"></div>
-        <div class="price" id="payAmt"></div>
-      </div>
-      <ol class="steps">
-        <li>Copiez le numéro et envoyez le montant.</li>
-        <li>Faites une capture d'écran de la transaction.</li>
-        <li>Envoyez-la sur WhatsApp avec le bouton ci-dessous.</li>
-      </ol>
-      <div class="row">
-        <button class="btn ghost" onclick="copyNum()">Copier</button>
-        <button class="btn" onclick="sendPay()">J'ai payé, envoyer la capture</button>
-      </div>
-      <div class="msg" id="copyMsg" style="color:var(--teal-d)"></div>
-    </div>
-  </div>
-</div>
-
-<!-- Fenetre : connexion / inscription -->
-<div class="overlay" id="winAuth">
-  <div class="win small">
-    <button class="x" onclick="closeWin('winAuth')">&#10005;</button>
-    <h2 id="aTitle">Connexion</h2>
-    <p class="sub" id="aSub">Connectez-vous pour suivre vos commandes.</p>
-    <label>Adresse e-mail</label>
-    <input type="email" id="aMail" placeholder="vous@exemple.com">
-    <label>Mot de passe</label>
-    <input type="password" id="aPass" placeholder="6 caractères minimum">
-    <button class="btn" style="width:100%" id="aBtn" onclick="submitAuth()">Se connecter</button>
-    <div class="msg" id="aMsg"></div>
-    <p style="text-align:center;margin-top:12px;font-size:.88rem">
-      <a href="#" id="aSwitch" onclick="switchAuth();return false;" style="color:var(--teal-d);font-weight:600">Pas de compte ? Créer un compte</a>
-    </p>
-  </div>
-</div>
-
+<h2 class="ttl" id="services">Nos services</h2>
+<input id="q" placeholder="Rechercher un service…" oninput="renderSvc()">
+<div class="grid" id="svc"></div>
+<h2 class="ttl">Catégories</h2>
+<div class="folders">
+<div class="fd" onclick="go()"><span>📁</span>Services logiciels</div>
+<div class="fd" onclick="openServeur()"><span>📁</span>Service serveur</div>
+<div class="fd" onclick="payInfo()"><span>📁</span>Moyens de paiement</div>
+</div></main>
+<div class="feat"><div>⚡ <b>Livraison rapide</b><br>Résultats en quelques minutes</div><div>🔐 <b>100 % sécurisé</b><br>Paiement vérifié</div><div>💬 <b>Support WhatsApp</b><br>Toujours disponible</div><div>💳 <b>Paiement facile</b><br>MTN, Airtel, Binance</div></div>
+<footer id="contact">
+<div><h4>N-E Software</h4><p>Solutions logicielles GSM</p><p>Congo-Brazzaville</p></div>
+<div><h4>Contact</h4><p>WhatsApp : +242 06 981 98 01</p><p>YouTube : <a href="https://www.youtube.com/@Unlock-phone-Bypass-tutoriel" target="_blank" rel="noopener" style="color:#fff;text-decoration:underline">Unlock-phone-Bypass-tutoriel</a></p></div>
+<div><h4>Services</h4><p>MDM · FRP · Anti-crack</p><p>IMEI · Huawei ID · Tecno ID</p><p>Firmwares · iCloud</p></div>
+<div><h4>Paiement</h4><p>MTN Money · Airtel Money</p><p>Binance Pay</p></div>
+<p style="grid-column:1/-1;opacity:.7">© 2026 N-E Software · N-E Software Academy</p></footer>
+<div class="fabs"><a class="fab yt" href="https://www.youtube.com/@Unlock-phone-Bypass-tutoriel" target="_blank" rel="noopener">▶ YouTube</a><a class="fab" href="#" onclick="wa('Bonjour N-E Software, j’ai une question.');return false">💬 WhatsApp</a></div>
+<div class="ld" id="ld"><img src="images/logo.png" alt="" onerror="this.outerHTML='<b>N-E</b>'"></div>
+<div class="ov" id="ov" onclick="if(event.target==this)closeM()"><div class="mod" id="mod"></div></div>
 <script>
-  /* ===== Reglages ===== */
-  var NUMERO_WA = "242069819801";            // WhatsApp +242 06 981 98 01
-  var NUM_MTN = "06 981 98 01";
-  var NUM_AIRTEL = "04 445 46 87";
-  var BINANCE_ID = "1161490878";             // Pay ID Binance
-  var USDT_TAUX = 0;                         // FCFA pour 1 dollar USDT, ex : 600. Laissez 0 pour ne pas afficher l'USDT
-
-  /* Liste des logiciels du Service serveur.
-     Pour une icone : ajoutez le fichier dans le dossier images, avec le nom en minuscules,
-     sans espaces ni symboles (ex : unlocktool.png). Sans fichier, une icone par defaut s'affiche. */
-  var LOGICIELS = [
-    "Phoenix Service Tool","Fenix Tool","Global Unlocker Pro","Global FRP Tool (GFT)","Falcon FRP Tool",
-    "Fast Unlocker Pro","Griffin Unlock","NCK Online Tool","Android Multi Tool (AMT)","Cheetah Tool",
-    "Mysterio FRP","Nexus FRP Tool","Apex FRP Tool","Eagle FRP","ArabFRP Tool",
-    "Tira Unlocker","The Magic Tool","SamsungTool.us","SamKey Services","GSM ORO KG Tool",
-    "HS Pro MDM Tool","MDMFix Tool","MultiUnlock Service Utility Tool","Shell Tool","Odin Activations",
-    "Octoplus Samsung","Z3X / Pandora Credits","Xiaomi BD Auth Tool","Xiaomi Repair Tool (XRT)","Xiaomi Paid Tool",
-    "Xiaomi Cert Critical Data","Mi Pro Tool","FCK Tool","TSM Tool","HXRU Xiaomi",
-    "Realme Pro Tool","Bahubali Power Tool","OPlusProLogin","Hydra Pro","Hydra Digital Activation",
-    "Infinity CM2 Online","EFT Pro","DFT Tool","UMT Products","UFT Tool",
-    "Sigma Plus Digital","Chimera Tool","Octoplus Full Digital License","Pandora Activation","TFM Pro Tool",
-    "UnlockTool","360 Tool","Smart Tool Pro","UNI Tool","Moto King Pro",
-    "Moto M Tool","WorldLinkGSM Tool","JC Programmer","Borneo Schematic","DZKJ Schematic",
-    "Orion by ESTECH Schematics","W2R Solutions Schematic","XinZhiZao (XZZ)","tool.emmc-ufs","MobileSea",
-    "RTC Tool","Tera Tool","Lika Tool","AWT (AndroidWinTool)","CF-Tools",
-    "KRDT Utility Pro","JAT Auth Tool","RFT Loader","SafeWork Tool","Pixel Pro Tool",
-    "IPTV","Prime Video (Amazon Prime Video)"
-  ];
-
-  /* ===== Outils ===== */
-  function $(id){return document.getElementById(id)}
-  function openWin(id){$(id).classList.add('open')}
-  function closeWin(id){$(id).classList.remove('open')}
-  function wa(msg){window.open('https://wa.me/'+NUMERO_WA+'?text='+encodeURIComponent(msg),'_blank')}
-  function fmt(n){return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,' ')+' FCFA'}
-  function slug(s){return s.toLowerCase().replace(/[^a-z0-9]+/g,'')}
-
-  if(BINANCE_ID !== 'A REMPLIR'){ $('binanceShow').textContent = BINANCE_ID; } else { $('binanceShow').parentNode.innerHTML = $('binanceShow').parentNode.innerHTML.replace(/&nbsp;\|&nbsp; <strong>Binance Pay<\/strong> : ID <span id="binanceShow"><\/span>/, ''); }
-
-  /* ===== Catalogue (dossiers) ===== */
-  var FOLDERS = {
-    proc:{title:'MediaTek et Spreadtrum',sub:'Choisissez un service, puis le type de processeur.',items:[
-      {n:'MDM',d:'Suppression du verrouillage MDM.',mtk:7700,spd:6500},
-      {n:'FRP',d:'Suppression du compte Google après réinitialisation.',mtk:3000,spd:2500},
-      {n:'Anti-crack',d:'Protection de votre téléphone.',mtk:8500,spd:7700},
-      {n:'Réparation d\'IMEI',d:'Réparation de l\'IMEI de votre appareil.',mtk:2500,spd:2000}
-    ]},
-    comptes:{title:'Suppression de comptes',sub:'Pour les téléphones dont vous êtes le propriétaire.',items:[
-      {n:'Tecno ID',d:'Suppression du compte Tecno ID.',prix:3500},
-      {n:'Huawei ID',d:'Prix selon la version de protection, donné lors du contact.',commande:true},
-      {n:'iCloud',d:'Prix selon le type de protection, donné lors du contact.',commande:true}
-    ]},
-    firm:{title:'Firmwares et déblocage en ligne',sub:'Prix donné selon votre demande.',items:[
-      {n:'Firmwares d\'origine',d:'Prix selon la taille du firmware et le type de téléphone.',commande:true,msg:'Marque et modèle du téléphone : '},
-      {n:'Déblocage en ligne',d:'Décrivez votre souci et joignez une capture d\'écran de votre appareil.',commande:true,msg:'Mon souci : '}
-    ]},
-    serveur:{title:'Service serveur',sub:'Activation, location de licences et assistance. Prix donné sur WhatsApp.',items:[
-      {n:'Service d\'activation',d:'Activation de licence pour le logiciel de votre choix.',serveur:'activation'},
-      {n:'Service de location',d:'Location de licence, précisez la durée sur WhatsApp.',serveur:'location'},
-      {n:'Service d\'assistance',d:'Aide sur votre logiciel, joignez une capture d\'écran.',serveur:'assistance'}
-    ]}
-  };
-
-  function openFolder(key){
-    var f = FOLDERS[key];
-    $('fTitle').textContent = f.title;
-    $('fSub').textContent = f.sub;
-    var html = '';
-    f.items.forEach(function(it,i){
-      var prix = it.prix ? fmt(it.prix) : (it.mtk ? 'dès '+fmt(it.spd) : 'Sur commande');
-      var bouton = (it.prix||it.mtk) ? 'Acheter' : 'Commander';
-      html += '<div class="item"><div><h4>'+it.n+'</h4><p>'+it.d+'</p><span class="price">'+prix+'</span></div>'+
-              '<button class="btn" onclick="clickItem(\''+key+'\','+i+')">'+bouton+'</button></div>';
-    });
-    $('fBody').innerHTML = html;
-    openWin('winFolder');
-  }
-
-  var curService='', curMtk=0, curSpd=0;
-  function clickItem(key,i){
-    var it = FOLDERS[key].items[i];
-    if(it.mtk){ curService = it.n; curMtk = it.mtk; curSpd = it.spd;
-      $('pTitle').textContent = it.n; $('pMtk').textContent = fmt(it.mtk); $('pSpd').textContent = fmt(it.spd);
-      openWin('winProc'); return; }
-    if(it.prix){ openPay(it.n, it.prix); return; }
-    if(it.serveur){ openServeur(it); return; }
-    wa('Bonjour, je veux commander : '+it.n+'. '+(it.msg||''));
-  }
-
-  function pickProc(p){
-    closeWin('winProc');
-    openPay(curService+' '+p, p==='MediaTek'?curMtk:curSpd);
-  }
-
-  /* ===== Service serveur : recherche + icones ===== */
-  var curServeur='', softChoisi='';
-  function openServeur(it){
-    curServeur = it.serveur; softChoisi='';
-    $('sTitle').textContent = it.n;
-    $('sSub').textContent = it.d;
-    $('sSearch').value=''; $('sMsg').textContent='';
-    $('sChosen').textContent='Aucun logiciel choisi.';
-    filtrerLogiciels();
-    openWin('winServeur');
-  }
-  function filtrerLogiciels(){
-    var q = $('sSearch').value.toLowerCase().trim();
-    var html = '';
-    LOGICIELS.forEach(function(l,i){
-      if(q && l.toLowerCase().indexOf(q) === -1) return;
-      var sel = (l === softChoisi) ? ' sel' : '';
-      var ini = l.charAt(0).toUpperCase();
-      html += '<div class="soft'+sel+'" onclick="choisirSoft('+i+')">'+
-              '<img src="images/'+slug(l)+'.png" alt="" onerror="this.outerHTML=\'<div class=dflt>'+ini+'</div>\'">'+
-              '<span>'+l+'</span></div>';
-    });
-    if(!html) html = '<div class="soft" style="cursor:default;color:#6b7c8c">Aucun logiciel trouvé. Écrivez-nous sur WhatsApp.</div>';
-    $('sList').innerHTML = html;
-  }
-  function choisirSoft(i){
-    softChoisi = LOGICIELS[i];
-    $('sChosen').innerHTML = 'Logiciel choisi : <strong>'+softChoisi+'</strong>';
-    $('sMsg').textContent='';
-    filtrerLogiciels();
-  }
-  function sendServeur(){
-    if(!softChoisi){ $('sMsg').textContent='Choisissez d\'abord un logiciel dans la liste.'; return; }
-    var t = {activation:"l'activation de licence",location:'la location de licence',assistance:"une assistance"}[curServeur];
-    wa('Bonjour, je veux commander '+t+' pour : '+softChoisi+'. Merci de m\'indiquer le prix.');
-  }
-
-  /* ===== Paiement ===== */
-  var payLabel='', payAmount=0, payMode='';
-  function openPay(label, amount){
-    payLabel=label; payAmount=amount; payMode='';
-    $('payRecap').innerHTML = 'Service : <strong>'+label+'</strong><br>Montant : <strong>'+fmt(amount)+'</strong>';
-    ['optMtn','optAirtel','optBinance'].forEach(function(id){$(id).classList.remove('sel')});
-    $('optBinance').style.display = (BINANCE_ID === 'A REMPLIR') ? 'none' : 'flex';
-    $('payDetail').style.display='none'; $('copyMsg').textContent='';
-    closeWin('winFolder'); openWin('winPay');
-  }
-  function selPay(m){
-    payMode=m;
-    $('optMtn').classList.toggle('sel',m==='mtn');
-    $('optAirtel').classList.toggle('sel',m==='airtel');
-    $('optBinance').classList.toggle('sel',m==='binance');
-    if(m==='binance'){
-      $('payLabelTxt').textContent = 'Envoyez le montant à ce Pay ID Binance';
-      $('payNum').textContent = BINANCE_ID;
-      var usdt = USDT_TAUX > 0 ? ' (environ '+(payAmount/USDT_TAUX).toFixed(2)+' USDT)' : '';
-      $('payAmt').textContent = fmt(payAmount)+usdt;
-    } else {
-      $('payLabelTxt').textContent = 'Envoyez le montant au numéro';
-      $('payNum').textContent = m==='mtn'?NUM_MTN:NUM_AIRTEL;
-      $('payAmt').textContent = fmt(payAmount);
-    }
-    $('payDetail').style.display='block';
-  }
-  function copyNum(){
-    var n = $('payNum').textContent.replace(/\s/g,'');
-    if(navigator.clipboard){navigator.clipboard.writeText(n)}
-    $('copyMsg').textContent='Copié : '+n;
-  }
-  function sendPay(){
-    var m = {mtn:'MTN Money',airtel:'Airtel Money',binance:'Binance Pay'}[payMode] || 'Mobile Money';
-    wa('Bonjour, j\'ai payé '+fmt(payAmount)+' par '+m+' pour : '+payLabel+'. Voici la capture de la transaction.');
-  }
-
-  /* ===== Comptes utilisateurs (Supabase) ===== */
-  var SUPABASE_URL = "https://lhkhaxgkyvzvrzeimuva.supabase.co";
-  var SUPABASE_KEY = "sb_publishable_TwAcXQChIymtscfHTJKKJw_QhB7jO0Z";
-  var sb = null, modeInscription = false;
-
-  function initSupabase(){
-    if(typeof supabase === 'undefined') return;
-    sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-    sb.auth.getSession().then(function(r){ majUser(r.data.session ? r.data.session.user : null); });
-    sb.auth.onAuthStateChange(function(evt, session){ majUser(session ? session.user : null); });
-  }
-  function majUser(u){
-    $('btnLogin').style.display = u ? 'none' : 'inline-block';
-    $('userBox').style.display = u ? 'flex' : 'none';
-    if(u){ $('userMail').textContent = u.email; closeWin('winAuth'); }
-  }
-  function switchAuth(){
-    modeInscription = !modeInscription;
-    $('aTitle').textContent = modeInscription ? 'Créer un compte' : 'Connexion';
-    $('aSub').textContent = modeInscription ? 'Inscrivez-vous gratuitement.' : 'Connectez-vous pour suivre vos commandes.';
-    $('aBtn').textContent = modeInscription ? 'Créer mon compte' : 'Se connecter';
-    $('aSwitch').textContent = modeInscription ? 'Déjà un compte ? Se connecter' : 'Pas de compte ? Créer un compte';
-    $('aMsg').textContent='';
-  }
-  function submitAuth(){
-    if(!sb){ $('aMsg').textContent='Les comptes ne sont pas disponibles pour le moment.'; return; }
-    var mail=$('aMail').value.trim(), pass=$('aPass').value;
-    if(!mail || pass.length < 6){ $('aMsg').textContent='Entrez un e-mail et un mot de passe de 6 caractères minimum.'; return; }
-    $('aMsg').style.color='#c0392b'; $('aMsg').textContent='';
-    var p = modeInscription ? sb.auth.signUp({email:mail,password:pass}) : sb.auth.signInWithPassword({email:mail,password:pass});
-    p.then(function(r){
-      if(r.error){ $('aMsg').textContent = 'Erreur : '+r.error.message; return; }
-      if(modeInscription && !r.data.session){ $('aMsg').style.color='#177b83'; $('aMsg').textContent='Compte créé. Vérifiez votre e-mail pour confirmer, puis connectez-vous.'; }
-    });
-  }
-  function logout(){ if(sb) sb.auth.signOut(); }
+const WA="242069819801";
+const F=n=>n.toLocaleString("fr-FR")+" F CFA";
+const PAY=[["MTN Money","06 981 98 01"],["Airtel Money","04 445 46 87"],["Binance Pay (ID)","1161490878"]];
+const SVC=[
+{n:"MDM",i:"🔓",d:"Suppression du MDM selon le processeur",o:[["MediaTek",7700],["Spreadtrum",6500]]},
+{n:"FRP",i:"🛡️",d:"Suppression du compte Google (FRP)",o:[["MediaTek",3000],["Spreadtrum (SPD)",2500]]},
+{n:"Anti-crack",i:"🔒",d:"Protection du téléphone, deux versions",o:[["MediaTek",8500],["Spreadtrum",7700]]},
+{n:"Réparation IMEI",i:"📶",d:"Réparation d’IMEI, deux versions",o:[["MediaTek",2500],["Spreadtrum",2000]]},
+{n:"Tecno ID",i:"📱",d:"Suppression du compte Tecno ID",o:[["Tecno ID",3500]]},
+{n:"Huawei ID",i:"📱",d:"Prix selon la version de protection de l’appareil",c:1},
+{n:"Firmwares d’origine",i:"💾",d:"Prix selon la taille du firmware et le téléphone",c:1},
+{n:"iCloud",i:"☁️",d:"Prix selon le type de protection de l’appareil",c:1},
+{n:"Déblocage en ligne",i:"🌐",d:"Flash, FRP, etc. Décrivez votre souci et joignez une capture d’écran",c:1,note:1}];
+/* Complète cette liste avec tes 77 outils : le nom doit être identique au fichier images/NOM.png */
+const SRV=["UnlockTool","TSM Tool","Chimera Tool","Griffin Tool","EFT Pro","FT Pro","Scorpion","Phoenix Service Tool","Fenix Tool","Global Unlocker Pro","Sigma Plus","Z3X Tool","Octoplus","Hydra","IPTV","Prime Video"];
+const SL=[["MDM MediaTek dès 7 700 F","Déblocage rapide, paiement Mobile Money","linear-gradient(120deg,#0d47a1,#26c6da)"],["FRP · IMEI · Anti-crack","Tous les services logiciels GSM au même endroit","linear-gradient(120deg,#004d40,#1de9b6)"],["Service serveur","Activation, location et assistance de vos logiciels","linear-gradient(120deg,#311b92,#2196f3)"]];
+const $=s=>document.querySelector(s);
+function wa(t){open("https://wa.me/"+WA+"?text="+encodeURIComponent(t),"_blank")}
+function M(h,cb){$("#ld").classList.add("on");setTimeout(()=>{$("#ld").classList.remove("on");$("#mod").innerHTML='<button class="x" onclick="closeM()">×</button>'+h;$("#ov").classList.add("on");cb&&cb()},900)}
+function go(){$("#ld").classList.add("on");setTimeout(()=>{$("#ld").classList.remove("on");$("#services").scrollIntoView({behavior:"smooth"})},900)}
+function closeM(){$("#ov").classList.remove("on")}
+$("#hero").innerHTML=SL.map((s,k)=>`<div class="sl ${k?'':'on'}" style="background:${s[2]}"><h2>${s[0]}</h2><p>${s[1]}</p><a href="#" onclick="wa('Bonjour, je veux commander : ${s[0]}');return false">Commander sur WhatsApp</a></div>`).join("");
+let c=0;setInterval(()=>{const a=document.querySelectorAll(".sl");a[c].classList.remove("on");c=(c+1)%a.length;a[c].classList.add("on")},4500);
+/* Images du bandeau : images/bandeau1.png, bandeau2.png, ... (jusqu'à 10, dans l'ordre). Sans image, les fonds de couleur restent. */
+(async()=>{const ok=[];for(let i=1;i<=10;i++){const u="images/bandeau"+i+".png";const y=await new Promise(r=>{const m=new Image();m.onload=()=>r(1);m.onerror=()=>r(0);m.src=u});if(!y)break;ok.push(u)}
+if(!ok.length)return;const h=$("#hero");h.classList.add("im");h.innerHTML=ok.map((u,k)=>`<div class="sl ${k?'':'on'}" style="background:url(${u}) center/cover"></div>`).join("");c=0})();
+function renderSvc(){const q=$("#q").value.toLowerCase();$("#svc").innerHTML=SVC.map((s,k)=>[s,k]).filter(([s])=>s.n.toLowerCase().includes(q)).map(([s,k])=>`<div class="card" onclick="openSvc(${k})"><div class="ic">${s.i}</div><div><b>${s.n}</b><p>${s.d}</p><span class="bd ${s.c?'o':''}">${s.c?'SUR COMMANDE':'dès '+F(Math.min(...s.o.map(x=>x[1])))}</span></div></div>`).join("")}
+function openSvc(k){const s=SVC[k];
+if(s.c)return M(`<h3>${s.i} ${s.n}</h3><p>${s.d}</p>${s.note?'<textarea id="dsc" rows="4" placeholder="Décrivez votre souci…"></textarea><p class="sm">Après l’envoi, joignez une capture d’écran de votre appareil sur WhatsApp.</p>':''}<button class="btn g" onclick="cmd(${k})">Commander</button>`);
+M(`<h3>${s.i} ${s.n}</h3>${s.o.length>1?'<p>Choisissez le type de processeur</p>':''}${s.o.map((o,j)=>`<label class="opt"><input type="radio" name="o" value="${j}" ${j?'':'checked'}>${o[0]}<b>${F(o[1])}</b></label>`).join("")}<button class="btn" onclick="pay(${k})">Acheter</button>`)}
+function cmd(k){const d=$("#dsc");wa("Bonjour, je souhaite commander : "+SVC[k].n+"."+(d?" Mon souci : "+d.value:""))}
+const payRows=()=>PAY.map(p=>`<div class="pm"><b>${p[0]}</b><span>${p[1]}</span><button class="cp" onclick="navigator.clipboard.writeText('${p[1].replace(/ /g,"")}')">Copier</button></div>`).join("");
+function pay(k){const s=SVC[k],o=s.o[$("input[name=o]:checked").value],l=s.n+(s.o.length>1?" "+o[0]:"");
+M(`<h3>Paiement</h3><p>${l} : <b>${F(o[1])}</b></p>${payRows()}<p class="sm">Envoyez le montant, puis la capture de la transaction sur WhatsApp.</p><button class="btn g" onclick="wa('Bonjour, j’ai payé ${l} (${F(o[1])}). Voici la capture de la transaction.')">J’ai payé : envoyer la capture</button>`)}
+function payInfo(){M(`<h3>Moyens de paiement</h3>${payRows()}<p class="sm">Après le paiement, envoyez la capture de la transaction sur WhatsApp.</p>`)}
+function openServeur(){M(`<h3>Service serveur</h3><input id="q2" placeholder="Rechercher un logiciel…" oninput="lst()"><div class="grid s" id="lst"></div>`,lst)}
+function lst(){const q=$("#q2").value.toLowerCase();$("#lst").innerHTML=SRV.filter(n=>n.toLowerCase().includes(q)).map(n=>`<div class="tl" data-n="${n}" onclick="srv(this.dataset.n)"><img src="images/${encodeURI(n)}.png" alt="" onerror="this.style.visibility='hidden'">${n}</div>`).join("")}
+function srv(n){M(`<h3>${n}</h3><p>Choisissez le service :</p>`+["Activation","Location","Assistance"].map(m=>`<button class="btn" onclick="wa('Bonjour, je souhaite le service ${m.toLowerCase()} pour ${n}. Quel est le prix ?')">${m}</button>`).join(""))}
+renderSvc();
 </script>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>initSupabase();</script>
-</body>
-</html>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+const sb=supabase.createClient("https://lhkhaxgkyvzvrzeimuva.supabase.co","sb_publishable_TwAcXQChIymtscfHTJKKJw_QhB7jO0Z");
+function openAuth(){M(`<h3>Mon compte</h3><input id="em" type="email" placeholder="E-mail"><input id="pw" type="password" placeholder="Mot de passe (6 caractères minimum)"><p class="sm" id="msg"></p><button class="btn" onclick="auth('in')">Connexion</button><button class="btn o" onclick="auth('up')">Créer un compte</button>`)}
+async function auth(t){const e=$("#em").value,p=$("#pw").value;
+const {error}=t=="in"?await sb.auth.signInWithPassword({email:e,password:p}):await sb.auth.signUp({email:e,password:p});
+$("#msg").textContent=error?error.message:(t=="up"?"Compte créé. Vérifiez votre e-mail si une confirmation est demandée.":"Connecté !");
+if(!error&&t=="in")closeM()}
+sb.auth.onAuthStateChange((_,s)=>{const b=$("#authBtn");b.textContent=s?s.user.email.split("@")[0]+" · Quitter":"Connexion / Inscription";b.onclick=s?()=>sb.auth.signOut():openAuth});
+</script>
+</body></html>
